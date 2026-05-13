@@ -1,0 +1,400 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.cpu-container {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.processor {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border: 3px solid #00d9ff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 217, 255, 0.05);
+  box-shadow:
+    0 0 20px rgba(0, 217, 255, 0.3),
+    0 0 40px rgba(0, 217, 255, 0.1);
+}
+
+.core {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #00d9ff;
+  border-radius: 6px;
+  background: rgba(0, 217, 255, 0.1);
+  position: relative;
+}
+
+.core-lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.core-line-h {
+  position: absolute;
+  background: #00d9ff;
+  height: 2px;
+  width: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.core-line-v {
+  position: absolute;
+  background: #00d9ff;
+  width: 2px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.line-top-group {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line-bottom-group {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line-left-group {
+  position: absolute;
+  left: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.line-right-group {
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.main-line-v {
+  width: 3px;
+  height: 80px;
+  background: linear-gradient(to bottom, #00d9ff, #00ccff);
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+}
+
+.main-line-h {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #00d9ff, #00ccff);
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+}
+
+.branch-container {
+  position: absolute;
+}
+
+.branch-top-1 {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.branch-top-2 {
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.branch-bottom-1 {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.branch-bottom-2 {
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.branch-left-1 {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.branch-left-2 {
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.branch-right-1 {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.branch-right-2 {
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.branch-l {
+  width: 35px;
+  height: 2px;
+  background: #00ccff;
+  box-shadow: 0 0 6px rgba(0, 204, 255, 0.5);
+  position: absolute;
+  right: 50%;
+  transform: rotate(-35deg);
+  transform-origin: right center;
+}
+
+.branch-r {
+  width: 35px;
+  height: 2px;
+  background: #00ccff;
+  box-shadow: 0 0 6px rgba(0, 204, 255, 0.5);
+  position: absolute;
+  left: 50%;
+  transform: rotate(35deg);
+  transform-origin: left center;
+}
+
+.branch-up {
+  height: 35px;
+  width: 2px;
+  background: #00ccff;
+  box-shadow: 0 0 6px rgba(0, 204, 255, 0.5);
+  position: absolute;
+  bottom: 50%;
+  transform: rotate(-35deg);
+  transform-origin: bottom center;
+}
+
+.branch-down {
+  height: 35px;
+  width: 2px;
+  background: #00ccff;
+  box-shadow: 0 0 6px rgba(0, 204, 255, 0.5);
+  position: absolute;
+  top: 50%;
+  transform: rotate(35deg);
+  transform-origin: top center;
+}
+
+.dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #00ffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.dot-center-top { top: -3px; left: 50%; transform: translateX(-50%); }
+.dot-center-bottom { bottom: -3px; left: 50%; transform: translateX(-50%); }
+.dot-center-left { left: -3px; top: 50%; transform: translateY(-50%); }
+.dot-center-right { right: -3px; top: 50%; transform: translateY(-50%); }
+
+.dot-end-top { top: -3px; left: 50%; transform: translateX(-50%); }
+.dot-end-bottom { bottom: -3px; left: 50%; transform: translateX(-50%); }
+.dot-end-left { left: -3px; top: 50%; transform: translateY(-50%); }
+.dot-end-right { right: -3px; top: 50%; transform: translateY(-50%); }
+
+.dot-mid-t1 { top: 20px; left: 50%; transform: translateX(-50%); }
+.dot-mid-t2 { top: 50px; left: 50%; transform: translateX(-50%); }
+
+.dot-mid-b1 { bottom: 20px; left: 50%; transform: translateX(-50%); }
+.dot-mid-b2 { bottom: 50px; left: 50%; transform: translateX(-50%); }
+
+.dot-mid-l1 { left: 20px; top: 50%; transform: translateY(-50%); }
+.dot-mid-l2 { left: 50px; top: 50%; transform: translateY(-50%); }
+
+.dot-mid-r1 { right: 20px; top: 50%; transform: translateY(-50%); }
+.dot-mid-r2 { right: 50px; top: 50%; transform: translateY(-50%); }
+
+.dot-branch {
+  width: 5px;
+  height: 5px;
+  top: -2.5px;
+  left: -2.5px;
+}
+
+.dot-branch-l { left: -2.5px; }
+.dot-branch-r { right: -2.5px; left: auto; }
+.dot-branch-u { top: -2.5px; }
+.dot-branch-d { bottom: -2.5px; top: auto; }
+
+.logo-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  background: linear-gradient(135deg, #00d4ff, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.contact-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: text;
+  transition: all 0.3s ease;
+}
+
+.contact-item:focus-within {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.03);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), 0 0 20px rgba(0, 212, 255, 0.05);
+}
+
+.contact-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #c8d0dc;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.contact-input::placeholder {
+  color: #475569;
+}
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+  color: #00d4ff;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.contact-textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.contact-textarea::placeholder {
+  color: #475569;
+}
+
+.contact-textarea:focus {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.03);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1), 0 0 20px rgba(0, 212, 255, 0.05);
+}
+
+.contact-submit {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: #00d4ff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-submit:hover {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.contact-submit:active {
+  transform: translateY(0);
+}
