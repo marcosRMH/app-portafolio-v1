@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, Inject, PLATFORM_ID, ElementRef, Output, EventEmitter } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isPlatformBrowser } from '@angular/common';
@@ -14,6 +14,8 @@ gsap.registerPlugin(ScrollTrigger);
 export class Navbar implements AfterViewInit {
   private menuOpen = false;
 
+  @Output() langChange = new EventEmitter<string>();
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private el: ElementRef
@@ -26,6 +28,7 @@ export class Navbar implements AfterViewInit {
     this.setupScrollEffect();
     this.setupHoverEffects();
     this.setupMobileMenu();
+    this.setupLangSelect();
   }
 
   private animateEntrance(): void {
@@ -42,17 +45,6 @@ export class Navbar implements AfterViewInit {
       duration: 0.5,
       stagger: 0.1,
     }, '-=0.3')
-    .from('.language-select', {
-      y: -20,
-      opacity: 0,
-      duration: 0.4,
-    }, '-=0.2')
-    .from('.nav-btn', {
-      y: -20,
-      opacity: 0,
-      duration: 0.4,
-      scale: 0.9,
-    }, '-=0.2');
   }
 
   private setupScrollEffect(): void {
@@ -150,5 +142,12 @@ export class Navbar implements AfterViewInit {
     links.querySelectorAll('.nav-link').forEach((link: HTMLElement) => {
       link.addEventListener('click', closeMenu);
     });
+  }
+
+  private setupLangSelect(): void {
+    const select = this.el.nativeElement.querySelector('#langSelect') as HTMLSelectElement;
+    if (!select) return;
+    this.langChange.emit(select.value);
+    select.addEventListener('change', () => this.langChange.emit(select.value));
   }
 }

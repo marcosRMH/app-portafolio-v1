@@ -11,5 +11,5 @@ import { FooterPage } from './footer-page/footer-page';
   styleUrl: './app.css'
 })
 export class App {
-
+  selectedLang = 'es';
 }
