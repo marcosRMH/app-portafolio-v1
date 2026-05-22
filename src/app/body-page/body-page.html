@@ -1,4 +1,4 @@
-<div class="main-layout">
+<div class="main-layout" id="about">
   <div class="left-section">
     <div class="cpu-container">
       <div class="processor">
@@ -87,7 +87,7 @@
     </div>
 
     <h1 class="logo-title">
-      DEVELOPER - CLOUD
+      MARCOS - RMH
     </h1>
   </div>
 
@@ -118,7 +118,7 @@
         <p class="about-text">
           {{ aboutMe }}
         </p>
-        <div class="about-stats">
+        <!-- <div class="about-stats">
           <div class="stat-item">
             <span class="stat-number">+5</span>
             <span class="stat-label">Años de experiencia</span>
@@ -139,7 +139,7 @@
           <span class="tech-tag">TypeScript</span>
           <span class="tech-tag">Docker</span>
           <span class="tech-tag">Python</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -163,7 +163,7 @@
   </div>
 </div>
 
-<div class="section">
+<div class="section" id="projects">
   <h2 class="section-heading">{{ titleProjects }}</h2>
   <div class="projects-grid">
     @for (project of projectEntries; track $index) {
@@ -256,7 +256,7 @@
 </div>
 -->
 
-<div class="contact-section">
+<div class="contact-section" id="contact">
   <h2 class="contact-heading">{{ titleContact }}</h2>
 
   @if (success) {

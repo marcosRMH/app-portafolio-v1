@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  padding: 2rem;
-  gap: 2rem;
+  padding: 1.5rem 2rem 0;
+  gap: 1rem;
 }
 
 .cpu-container {
@@ -404,9 +404,12 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
-  min-height: 100vh;
+  padding: 4rem 1.5rem 1rem;
   align-items: center;
+}
+
+#about, #projects, #contact {
+  scroll-margin-top: 5rem;
 }
 
 .left-section {
@@ -597,7 +600,7 @@
 .section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 1.5rem 1.5rem;
 }
 
 .section-heading {
@@ -811,7 +814,7 @@
 .contact-section {
   max-width: 600px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+  padding: 1.5rem 1.5rem;
 }
 
 .contact-heading {

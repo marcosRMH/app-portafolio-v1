@@ -1,9 +1,10 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ViewChildren, QueryList, ElementRef, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { isPlatformBrowser } from '@angular/common';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 @Component({
   selector: 'app-navbar',
@@ -14,11 +15,18 @@ gsap.registerPlugin(ScrollTrigger);
 export class Navbar implements AfterViewInit {
   private menuOpen = false;
 
+  @ViewChild('navbarEl') navbarEl!: ElementRef<HTMLElement>;
+  @ViewChild('navLinksEl') navLinksEl!: ElementRef<HTMLElement>;
+  @ViewChild('menuToggleEl') menuToggleEl!: ElementRef<HTMLElement>;
+  @ViewChild('navOverlayEl') navOverlayEl!: ElementRef<HTMLElement>;
+  @ViewChild('langSelectEl') langSelectEl!: ElementRef<HTMLSelectElement>;
+  @ViewChild('langSelectMobileEl') langSelectMobileEl!: ElementRef<HTMLSelectElement>;
+  @ViewChildren('navLinkEl') navLinkEls!: QueryList<ElementRef<HTMLAnchorElement>>;
+
   @Output() langChange = new EventEmitter<string>();
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private el: ElementRef
   ) {}
 
   ngAfterViewInit(): void {
@@ -27,6 +35,7 @@ export class Navbar implements AfterViewInit {
     this.animateEntrance();
     this.setupScrollEffect();
     this.setupHoverEffects();
+    this.setupLinkScroll();
     this.setupMobileMenu();
     this.setupLangSelect();
   }
@@ -48,79 +57,70 @@ export class Navbar implements AfterViewInit {
   }
 
   private setupScrollEffect(): void {
-    const navbar = this.el.nativeElement.querySelector('#navbar');
-
-    gsap.to(navbar, {
+    gsap.to(this.navbarEl.nativeElement, {
       scrollTrigger: {
         trigger: document.body,
         start: '80px top',
         toggleActions: 'play none none reverse',
-        onEnter: () => navbar.classList.add('scrolled'),
-        onLeaveBack: () => navbar.classList.remove('scrolled'),
+        onEnter: () => this.navbarEl.nativeElement.classList.add('scrolled'),
+        onLeaveBack: () => this.navbarEl.nativeElement.classList.remove('scrolled'),
       },
       duration: 0.3,
     });
   }
 
   private setupHoverEffects(): void {
-    const links = this.el.nativeElement.querySelectorAll('.nav-link');
-
-    links.forEach((link: HTMLElement) => {
-      link.addEventListener('mouseenter', () => {
-        gsap.to(link.querySelector('::after'), {
+    this.navLinkEls.forEach((link: ElementRef<HTMLAnchorElement>) => {
+      const el = link.nativeElement;
+      el.addEventListener('mouseenter', () => {
+        gsap.to(el.querySelector('::after'), {
           width: '100%',
           duration: 0.3,
           ease: 'power2.out',
         });
       });
 
-      link.addEventListener('mouseleave', () => {
-        gsap.to(link.querySelector('::after'), {
+      el.addEventListener('mouseleave', () => {
+        gsap.to(el.querySelector('::after'), {
           width: '0%',
           duration: 0.3,
           ease: 'power2.out',
         });
       });
     });
+  }
 
-    const btn = this.el.nativeElement.querySelector('.nav-btn');
-    if (btn) {
-      btn.addEventListener('mouseenter', () => {
-        gsap.to(btn, {
-          scale: 1.05,
-          duration: 0.2,
-          ease: 'power2.out',
+  private setupLinkScroll(): void {
+    this.navLinkEls.forEach((link: ElementRef<HTMLAnchorElement>) => {
+      const el = link.nativeElement;
+      el.addEventListener('click', (e: Event) => {
+        const href = el.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        e.preventDefault();
+        const target = document.querySelector(href) as HTMLElement | null;
+        if (!target) return;
+        gsap.to(window, {
+          duration: 1.2,
+          scrollTo: { y: target, offsetY: 80 },
+          ease: 'power3.inOut',
         });
+        this.closeMobileMenu();
       });
-
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, {
-          scale: 1,
-          duration: 0.2,
-          ease: 'power2.out',
-        });
-      });
-    }
+    });
   }
 
   private setupMobileMenu(): void {
-    const toggle = this.el.nativeElement.querySelector('#menuToggle');
-    const overlay = this.el.nativeElement.querySelector('#navOverlay');
-    const links = this.el.nativeElement.querySelector('#navLinks');
-
-    if (!toggle || !overlay || !links) return;
-
-    toggle.addEventListener('click', () => {
+    this.menuToggleEl.nativeElement.addEventListener('click', () => {
       this.menuOpen = !this.menuOpen;
 
-      toggle.classList.toggle('active');
-      links.classList.toggle('open');
-      overlay.classList.toggle('show');
+      this.menuToggleEl.nativeElement.classList.toggle('active');
+      this.navLinksEl.nativeElement.classList.toggle('open');
+      this.navOverlayEl.nativeElement.classList.toggle('show');
 
       if (this.menuOpen) {
-        gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        gsap.fromTo(this.navOverlayEl.nativeElement, { opacity: 0 }, { opacity: 1, duration: 0.3 });
         gsap.fromTo(
-          links.querySelectorAll('.nav-link'),
+          this.navLinkEls.map((l) => l.nativeElement),
           { x: 30, opacity: 0 },
           { x: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'power2.out' }
         );
@@ -129,25 +129,33 @@ export class Navbar implements AfterViewInit {
       document.body.style.overflow = this.menuOpen ? 'hidden' : '';
     });
 
-    const closeMenu = () => {
-      if (!this.menuOpen) return;
-      this.menuOpen = false;
-      toggle.classList.remove('active');
-      links.classList.remove('open');
-      overlay.classList.remove('show');
-      document.body.style.overflow = '';
-    };
-
-    overlay.addEventListener('click', closeMenu);
-    links.querySelectorAll('.nav-link').forEach((link: HTMLElement) => {
-      link.addEventListener('click', closeMenu);
+    this.navOverlayEl.nativeElement.addEventListener('click', () => this.closeMobileMenu());
+    this.navLinkEls.forEach((link) => {
+      link.nativeElement.addEventListener('click', () => this.closeMobileMenu());
     });
   }
 
+  private closeMobileMenu(): void {
+    if (!this.menuOpen) return;
+    this.menuOpen = false;
+    this.menuToggleEl.nativeElement.classList.remove('active');
+    this.navLinksEl.nativeElement.classList.remove('open');
+    this.navOverlayEl.nativeElement.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
   private setupLangSelect(): void {
-    const select = this.el.nativeElement.querySelector('#langSelect') as HTMLSelectElement;
-    if (!select) return;
-    this.langChange.emit(select.value);
-    select.addEventListener('change', () => this.langChange.emit(select.value));
+    const syncSelects = (source: HTMLSelectElement, target: HTMLSelectElement) => {
+      target.value = source.value;
+      this.langChange.emit(source.value);
+    };
+
+    const desktop = this.langSelectEl.nativeElement;
+    const mobile = this.langSelectMobileEl.nativeElement;
+
+    mobile.value = desktop.value;
+
+    desktop.addEventListener('change', () => syncSelects(desktop, mobile));
+    mobile.addEventListener('change', () => syncSelects(mobile, desktop));
   }
 }

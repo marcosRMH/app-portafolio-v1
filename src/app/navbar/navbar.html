@@ -1,4 +1,4 @@
-<nav id="navbar" class="navbar">
+<nav #navbarEl class="navbar">
   <div class="navbar-inner">
     <a href="#" class="nav-logo">
       <span class="logo-text-gradient">&lt;</span>
@@ -6,21 +6,24 @@
       <span class="logo-text-gradient">/&gt;</span>
     </a>
 
-    <div class="nav-links" id="navLinks">
-      <a href="#" class="nav-link" data-text="Inicio">Inicio</a>
-      <a href="#" class="nav-link" data-text="Proyectos">Proyectos</a>
-      <a href="#" class="nav-link" data-text="Contacto">Contacto</a>
-    </div>
-
-    <div class="nav-right">
-      <select class="language-select" id="langSelect">
+    <div #navLinksEl class="nav-links">
+      <a #navLinkEl href="#about" class="nav-link" data-text="Inicio">Inicio</a>
+      <a #navLinkEl href="#projects" class="nav-link" data-text="Proyectos">Proyectos</a>
+      <a #navLinkEl href="#contact" class="nav-link" data-text="Contacto">Contacto</a>
+      <select #langSelectMobileEl class="language-select lang-mobile">
         <option value="es">ESPAÑOL</option>
         <option value="en">ENGLISH</option>
       </select>
-      <a href="#" class="nav-btn" id="loginBtn">Login</a>
     </div>
 
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+    <div class="nav-right">
+      <select #langSelectEl class="language-select lang-desktop">
+        <option value="es">ESPAÑOL</option>
+        <option value="en">ENGLISH</option>
+      </select>
+    </div>
+
+    <button #menuToggleEl class="menu-toggle" aria-label="Menu">
       <span></span>
       <span></span>
       <span></span>
@@ -28,4 +31,4 @@
   </div>
 </nav>
 
-<div class="nav-overlay" id="navOverlay"></div>
+<div #navOverlayEl class="nav-overlay"></div>

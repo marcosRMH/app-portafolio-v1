@@ -178,6 +178,14 @@
   opacity: 0;
 }
 
+.lang-desktop {
+  display: block;
+}
+
+.lang-mobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: fixed;
@@ -205,6 +213,15 @@
 
   .nav-right {
     display: none;
+  }
+
+  .lang-desktop {
+    display: none;
+  }
+
+  .lang-mobile {
+    display: block;
+    margin-top: 1rem;
   }
 
   .menu-toggle {
