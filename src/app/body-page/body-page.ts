@@ -49,14 +49,8 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-     if (isPlatformBrowser(this.platformId)) {
-      const stored = localStorage.getItem('portfolioConfig');
-      if (stored) {
-        this.config = JSON.parse(stored) as PortfolioConfig;
-      }
-    }
+    this.useConfigInLive(this.lang);
     this.startAutoSlide();
-    // this.useConfigInLive('es');
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -121,9 +115,12 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
     tl.set('.logo-title', { y: 30, opacity: 0 });
     tl.set('.about-card', { y: 30, opacity: 0 });
     tl.set('.carousel-container', { y: 30, opacity: 0 });
+    tl.set('.section-heading', { y: 20, opacity: 0 });
     tl.set('.project-card', { y: 30, opacity: 0 });
     tl.set('.skill-category', { y: 30, opacity: 0 });
+    tl.set('.timeline', { opacity: 0 });
     tl.set('.timeline-item', { x: -20, opacity: 0 });
+    tl.set('.contact-section', { y: 20, opacity: 0 });
 
     tl.to('.processor', {
       scale: 1,
@@ -190,21 +187,19 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
       ease: 'power2.out',
     }, '-=0.15');
 
-    tl.to('.project-card', {
+    tl.to('.section-heading', {
       y: 0,
       opacity: 1,
       duration: 0.3,
       stagger: 0.08,
       ease: 'power2.out',
-    }, '-=0.2');
+    }, '-=0.15');
 
-    tl.to('.skill-category', {
-      y: 0,
+    tl.to('.timeline', {
       opacity: 1,
       duration: 0.3,
-      stagger: 0.08,
       ease: 'power2.out',
-    }, '-=0.3');
+    });
 
     tl.to('.timeline-item', {
       x: 0,
@@ -212,7 +207,30 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
       duration: 0.3,
       stagger: 0.1,
       ease: 'power2.out',
-    }, '-=0.3');
+    }, '-=0.1');
+
+    tl.to('.project-card', {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      stagger: 0.08,
+      ease: 'power2.out',
+    });
+
+    tl.to('.skill-category', {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      stagger: 0.08,
+      ease: 'power2.out',
+    }, '-=0.2');
+
+    tl.to('.contact-section', {
+      y: 0,
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.out',
+    });
 
     this.createInfiniteAnimations();
   }

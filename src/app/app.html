@@ -1,4 +1,4 @@
-<app-navbar (langChange)="selectedLang = $event"></app-navbar>
+<app-navbar (langChange)="selectedLang = $event" [lang]="selectedLang"></app-navbar>
 <app-body-page [lang]="selectedLang"></app-body-page>
 <app-footer-page [lang]="selectedLang"></app-footer-page>
 <router-outlet />

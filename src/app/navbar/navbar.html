@@ -7,9 +7,9 @@
     </a>
 
     <div #navLinksEl class="nav-links">
-      <a #navLinkEl href="#about" class="nav-link" data-text="Inicio">Inicio</a>
-      <a #navLinkEl href="#projects" class="nav-link" data-text="Proyectos">Proyectos</a>
-      <a #navLinkEl href="#contact" class="nav-link" data-text="Contacto">Contacto</a>
+      <a #navLinkEl href="#about" class="nav-link" [attr.data-text]="navLabels[0]">{{ navLabels[0] }}</a>
+      <a #navLinkEl href="#projects" class="nav-link" [attr.data-text]="navLabels[1]">{{ navLabels[1] }}</a>
+      <a #navLinkEl href="#contact" class="nav-link" [attr.data-text]="navLabels[2]">{{ navLabels[2] }}</a>
       <select #langSelectMobileEl class="language-select lang-mobile">
         <option value="es">ESPAÑOL</option>
         <option value="en">ENGLISH</option>

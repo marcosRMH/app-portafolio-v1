@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ViewChildren, QueryList, ElementRef, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ViewChildren, QueryList, ElementRef, Output, EventEmitter, Input, OnChanges, SimpleChanges, Inject, PLATFORM_ID } from '@angular/core';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -12,8 +12,11 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements AfterViewInit {
+export class Navbar implements AfterViewInit, OnChanges {
   private menuOpen = false;
+
+  @Input() lang: string = 'es';
+  navLabels = ['Inicio', 'Proyectos', 'Contacto'];
 
   @ViewChild('navbarEl') navbarEl!: ElementRef<HTMLElement>;
   @ViewChild('navLinksEl') navLinksEl!: ElementRef<HTMLElement>;
@@ -157,5 +160,26 @@ export class Navbar implements AfterViewInit {
 
     desktop.addEventListener('change', () => syncSelects(desktop, mobile));
     mobile.addEventListener('change', () => syncSelects(mobile, desktop));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lang']) {
+      this.updateNavLabels();
+    }
+  }
+
+  private updateNavLabels(): void {
+    try {
+      const stored = localStorage.getItem('portfolioConfig');
+      if (stored) {
+        const config = JSON.parse(stored);
+        const titles = config.titles;
+        if (titles?.[0]?.[this.lang]?.length >= 3) {
+          this.navLabels = [titles[0][this.lang][0], titles[0][this.lang][1], titles[0][this.lang][2]];
+        }
+      }
+    } catch {
+      // fallback to defaults
+    }
   }
 }
