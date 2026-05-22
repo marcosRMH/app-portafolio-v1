@@ -5,6 +5,7 @@ export interface PortfolioConfig {
   titles: Title[];
   carrousel: CarrouselItem[];
   experience: Experience[];
+  projects: ProjectItem[];
 }
 
 export interface ConfigRecapcha {
@@ -52,4 +53,15 @@ export interface ExperienceEntry {
 export interface ExperienceDetail {
   text: string;
   time: string;
+}
+
+export interface ProjectItem {
+  en?: ProjectEntry[];
+  es?: ProjectEntry[];
+}
+
+export interface ProjectEntry {
+  nameProject: string;
+  text: string;
+  tecnologies: string[];
 }

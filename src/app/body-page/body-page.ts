@@ -4,7 +4,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import gsap from 'gsap';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '../core/http/http.service';
-import { PortfolioConfig, AboutMe, Title, CarrouselItem } from '../shared/models/portfolio-config.model';
+import { PortfolioConfig, AboutMe, Title, CarrouselItem, Experience, ProjectItem, ProjectEntry } from '../shared/models/portfolio-config.model';
 
 interface ContactData {
   email: string;
@@ -39,6 +39,8 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   placeholderText = "";
   txtBtnSend = "";
 
+  experienceEntries: { role: string; text: string; time: string }[] = [];
+  projectEntries: ProjectEntry[] = [];
   carouselImages: { src: string; alt: string; description: string }[] = [];
   currentIndex = 0;
   private autoSlideInterval: any;
@@ -359,7 +361,8 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
       habilities: configPortal.data.habilities,
       carrousel: configPortal.data.carrousel,
       experience: configPortal.data.experience,
-      titles: configPortal.data.titles
+      titles: configPortal.data.titles,
+      projects: configPortal.data.projects
     }
     localStorage.setItem('portfolioConfig', JSON.stringify(configMap));
     return configMap;
@@ -400,6 +403,8 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
     this.configLetterHabilities(type);
     this.configLetterTitles(type);
     this.configCarrousel(type);
+    this.configLetterExperience(type);
+    this.configLetterProjects(type);
 
   }
 
@@ -440,5 +445,28 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
         });
     }
     this.carouselImages = arrToHtml;
+  }
+
+  private configLetterExperience(type:string){
+    const experienceObject = this.config?.experience.find(obj => obj[type as keyof typeof obj]);
+    const experienceRecord = experienceObject?.[type as keyof Experience] ?? [];
+    const flatEntries: { role: string; text: string; time: string }[] = [];
+    for (const entry of experienceRecord) {
+      for (const [role, detail] of Object.entries(entry)) {
+        flatEntries.push({ role, text: detail.text, time: detail.time });
+      }
+    }
+
+     this.experienceEntries = flatEntries.sort((a, b) => {
+      const yearA = parseInt(a.time.match(/\d{4}/)?.[0] || '0', 10);
+      const yearB = parseInt(b.time.match(/\d{4}/)?.[0] || '0', 10);
+      return yearB - yearA;
+    });
+
+  }
+
+  private configLetterProjects(type:string){
+    const projectsObject = this.config?.projects.find(obj => obj[type as keyof typeof obj]);
+    this.projectEntries = projectsObject?.[type as keyof ProjectItem] ?? [];
   }
 }
