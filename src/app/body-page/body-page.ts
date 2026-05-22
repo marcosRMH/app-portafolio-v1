@@ -382,7 +382,8 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
       titles: configPortal.data.titles,
       projects: configPortal.data.projects
     }
-    localStorage.setItem('portfolioConfig', JSON.stringify(configMap));
+    const TTL = 24 * 60 * 60 * 1000;
+    localStorage.setItem('portfolioConfig', JSON.stringify({ data: configMap, expiresAt: Date.now() + TTL }));
     return configMap;
   }
 
@@ -394,7 +395,13 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
     try {
       const stored = localStorage.getItem('portfolioConfig');
       if (stored) {
-        this.config = JSON.parse(stored) as PortfolioConfig;
+        const parsed = JSON.parse(stored);
+        if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
+          localStorage.removeItem('portfolioConfig');
+          this.config = await this.getConfigPortfolio(type);
+        } else {
+          this.config = parsed.data as PortfolioConfig;
+        }
       } else {
         this.config = await this.getConfigPortfolio(type);
       }

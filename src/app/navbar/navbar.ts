@@ -172,7 +172,12 @@ export class Navbar implements AfterViewInit, OnChanges {
     try {
       const stored = localStorage.getItem('portfolioConfig');
       if (stored) {
-        const config = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
+          localStorage.removeItem('portfolioConfig');
+          return;
+        }
+        const config = parsed.data;
         const titles = config.titles;
         if (titles?.[0]?.[this.lang]?.length >= 3) {
           this.navLabels = [titles[0][this.lang][0], titles[0][this.lang][1], titles[0][this.lang][2]];
