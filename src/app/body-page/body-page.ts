@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID, NgZone, OnInit, OnDestroy, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, AfterViewInit, Inject, PLATFORM_ID, NgZone, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import gsap from 'gsap';
@@ -45,7 +45,7 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   currentIndex = 0;
   private autoSlideInterval: any;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private ngZone: NgZone) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private ngZone: NgZone, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -54,11 +54,10 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['lang']) {
+    if (changes['lang'] && !changes['lang'].firstChange) {
       const lang = this.lang;
       console.log("Idioma seleccionado:", lang);
       await this.useConfigInLive(lang);
-      //this.showInfoPersonal(lang);
     }
   }
 
@@ -400,14 +399,15 @@ export class BodyPage implements AfterViewInit, OnInit, OnDestroy, OnChanges {
           localStorage.removeItem('portfolioConfig');
           this.config = await this.getConfigPortfolio(type);
         } else {
-          this.config = parsed.data as PortfolioConfig;
+          this.config = (parsed.data ?? parsed) as PortfolioConfig;
         }
       } else {
         this.config = await this.getConfigPortfolio(type);
       }
       this.recaptchaSiteKey = this.config.configRecapcha.tokenRECAPCHAclient;
       this.loadRecaptchaScript();
-      this.showInfoPersonal(type)
+      this.showInfoPersonal(type);
+      this.cdr.detectChanges();
     } catch {
       console.error('Error al cargar configuración');
     }

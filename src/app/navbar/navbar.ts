@@ -177,7 +177,7 @@ export class Navbar implements AfterViewInit, OnChanges {
           localStorage.removeItem('portfolioConfig');
           return;
         }
-        const config = parsed.data;
+        const config = parsed.data ?? parsed;
         const titles = config.titles;
         if (titles?.[0]?.[this.lang]?.length >= 3) {
           this.navLabels = [titles[0][this.lang][0], titles[0][this.lang][1], titles[0][this.lang][2]];
