@@ -83,6 +83,19 @@ Si rechazas, el workflow falla y el sitio se queda como estaba. Nada se publica 
 
 `ng deploy` ya no funciona en local (se eliminó el target `deploy` de `angular.json`): el único camino para publicar es el workflow.
 
+### Si usás pull requests
+
+Un PR hacia `master` **no publica nada**: solo corre el job **Build** para confirmar que el proyecto compila. El job `Publish to gh-pages` se salta y no te llega ninguna notificación de aprobación.
+
+El deploy sigue pasando recién al mergear, porque el merge genera un `push` a `master`:
+
+```bash
+git checkout -b mi-cambio
+# ... editás ...
+git push origin mi-cambio   # abrís el PR desde GitHub
+# mergeás el PR -> se dispara el workflow -> te pide aprobación
+```
+
 ### Configuración en GitHub (una sola vez)
 
 1. **Variable con la URL del backend**

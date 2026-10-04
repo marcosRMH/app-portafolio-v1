@@ -3,14 +3,16 @@ name: Deploy
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: deploy-gh-pages
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -32,6 +34,7 @@ jobs:
         run: npx ng build --base-href=https://marcosRMH.github.io/app-portafolio-v1/
       - name: Upload site
         uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
         with:
           name: site
           path: dist/app-portafolio-v1/browser
@@ -40,6 +43,7 @@ jobs:
   publish:
     name: Publish to gh-pages
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment: produccion
     steps:
