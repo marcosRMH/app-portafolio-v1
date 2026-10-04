@@ -54,6 +54,8 @@ jobs:
             --repo https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git \
             --branch gh-pages \
             --dir site \
+            --name "github-actions[bot]" \
+            --email "41898282+github-actions[bot]@users.noreply.github.com" \
             --message "Deploy ${{ github.sha }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
