@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate environment
+        run: node scripts/generate-environment.mjs
+        env:
+          URL_BASE_PORTFOLIO: ${{ vars.PORTFOLIO_API_URL }}
+      - name: Build
+        run: npx ng build --base-href=https://marcosRMH.github.io/app-portafolio-v1/
+      - name: Upload site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/app-portafolio-v1/browser
+          retention-days: 7
+
+  publish:
+    name: Publish to gh-pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment: produccion
+    steps:
+      - name: Download site
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+      - name: Publish to the gh-pages branch
+        run: |
+          npx --yes angular-cli-ghpages@3.0.3 \
+            --repo https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git \
+            --branch gh-pages \
+            --dir site \
+            --message "Deploy ${{ github.sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

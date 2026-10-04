@@ -39,6 +39,9 @@ testem.log
 /typings
 __screenshots__/
 
+# Generado en cada build desde URL_BASE_PORTFOLIO (variable de GitHub Actions o .env)
+/src/environments
+
 # System files
 .DS_Store
 Thumbs.db
